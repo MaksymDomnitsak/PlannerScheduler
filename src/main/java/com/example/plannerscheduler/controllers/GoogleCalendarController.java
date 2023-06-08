@@ -29,6 +29,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,10 @@ import java.util.UUID;
 public class GoogleCalendarController {
     private static final String APPLICATION_NAME = "My First Project";
 
-    private static final String CLIENT_ID = "562737003791-8q265o18bpejtttbbb5eacdaefanrblo.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
+    @Value("${client.id}")
+    private String CLIENT_ID = "";
+    @Value("${client.secret}")
+    private String CLIENT_SECRET = "";
     private static final String REDIRECT_URI = "http://localhost:8082/Callback";
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
