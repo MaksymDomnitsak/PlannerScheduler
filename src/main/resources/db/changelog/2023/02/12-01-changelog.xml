@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1676213169533-1" author="Maximuse (generated)">
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet id="1676213169533-2" author="Maximuse (generated)">
+        <createTable tableName="groups">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_groups"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-3" author="Maximuse (generated)">
+        <createTable tableName="notes">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_notes"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="lesson_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="body" type="VARCHAR(255)"/>
+            <column name="is_finished" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-4" author="Maximuse (generated)">
+        <createTable tableName="schedule">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_schedule"/>
+            </column>
+            <column name="subject_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teacher_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="day_of_week" type="BIGINT"/>
+            <column name="is_even_week" type="BOOLEAN"/>
+            <column name="lesson_order" type="BIGINT"/>
+            <column name="type_of_lesson" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_online" type="BOOLEAN"/>
+            <column name="auditory_number" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-5" author="Maximuse (generated)">
+        <createTable tableName="students">
+            <column name="student_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_students"/>
+            </column>
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-6" author="Maximuse (generated)">
+        <createTable tableName="subjects">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subjects"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-7" author="Maximuse (generated)">
+        <createTable tableName="teachers">
+            <column name="teacher_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_teachers"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-8" author="Maximuse (generated)">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="first_name" type="VARCHAR(32)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="patronymic_name" type="VARCHAR(32)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="user_role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(10)"/>
+            <column name="created_at" type="DATETIME"/>
+            <column name="modified_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1676213169533-9" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="lesson_id" baseTableName="notes" constraintName="FK_NOTES_ON_LESSON"
+                                 referencedColumnNames="id" referencedTableName="schedule"/>
+    </changeSet>
+    <changeSet id="1676213169533-10" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="notes" constraintName="FK_NOTES_ON_STUDENT"
+                                 referencedColumnNames="student_id" referencedTableName="students"/>
+    </changeSet>
+    <changeSet id="1676213169533-11" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="schedule"
+                                 constraintName="FK_SCHEDULE_ON_GROUP" referencedColumnNames="id"
+                                 referencedTableName="groups"/>
+    </changeSet>
+    <changeSet id="1676213169533-12" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="subject_id" baseTableName="schedule"
+                                 constraintName="FK_SCHEDULE_ON_SUBJECT" referencedColumnNames="id"
+                                 referencedTableName="subjects"/>
+    </changeSet>
+    <changeSet id="1676213169533-13" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="schedule"
+                                 constraintName="FK_SCHEDULE_ON_TEACHER" referencedColumnNames="teacher_id"
+                                 referencedTableName="teachers"/>
+    </changeSet>
+    <changeSet id="1676213169533-14" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="students"
+                                 constraintName="FK_STUDENTS_ON_GROUP" referencedColumnNames="id"
+                                 referencedTableName="groups"/>
+    </changeSet>
+    <changeSet id="1676213169533-15" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="students"
+                                 constraintName="FK_STUDENTS_ON_STUDENT" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1676213169533-16" author="Maximuse (generated)">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="teachers"
+                                 constraintName="FK_TEACHERS_ON_TEACHER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>
