@@ -41,7 +41,7 @@ public class SeleniumService {
         this.teacherRepository = teacherRepository;
         this.subjectRepository = subjectRepository;
         this.scheduleRepository = scheduleRepository;
-        System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/chromedriver.exe");
         this.options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless");

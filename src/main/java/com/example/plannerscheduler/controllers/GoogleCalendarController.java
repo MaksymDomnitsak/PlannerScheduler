@@ -67,7 +67,7 @@ public class GoogleCalendarController {
     public GoogleCalendarController(GroupService groupService,ScheduleService scheduleService) {
         this.groupService=groupService;
         this.scheduleService=scheduleService;
-        System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/chromedriver.exe");
         this.options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
 
