@@ -2,6 +2,7 @@ package com.example.plannerscheduler.service;
 
 import com.example.plannerscheduler.exception.ObjectNotFoundException;
 import com.example.plannerscheduler.models.Subject;
+import com.example.plannerscheduler.repository.ScheduleRepository;
 import com.example.plannerscheduler.repository.SubjectRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.List;
 public class SubjectService {
     SubjectRepository subjectRepository;
 
+    ScheduleRepository scheduleRepository;
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository) {
+    public SubjectService(SubjectRepository subjectRepository, ScheduleRepository scheduleRepository) {
         this.subjectRepository = subjectRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
 
@@ -34,6 +37,10 @@ public class SubjectService {
     public Subject getById(Long id) {
         return subjectRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Entity was not found  ID: ", id));
+    }
+
+    public List<Subject> getByTeacherId(Long teacherId){
+        return scheduleRepository.findSubjectsfromScheduleByTeacher(teacherId);
     }
 
     @Transactional

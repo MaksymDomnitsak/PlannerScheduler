@@ -1,9 +1,13 @@
 package com.example.plannerscheduler.controllers;
 
+import com.example.plannerscheduler.dto.GroupedNote;
 import com.example.plannerscheduler.dto.NoteDtoRequest;
 import com.example.plannerscheduler.dto.NoteDtoResponse;
 import com.example.plannerscheduler.mappers.NoteDtoToNoteMapper;
 import com.example.plannerscheduler.mappers.impl.NoteDtoToNote;
+import com.example.plannerscheduler.models.Group;
+import com.example.plannerscheduler.models.Student;
+import com.example.plannerscheduler.service.GroupService;
 import com.example.plannerscheduler.service.NoteService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,10 +34,13 @@ public class NoteController {
     NoteDtoToNoteMapper mapper = Mappers.getMapper(NoteDtoToNoteMapper.class);
     NoteDtoToNote toObjectMapper;
 
+    GroupService groupService;
 
-    public NoteController(NoteService noteService, NoteDtoToNote toObjectMapper) {
+
+    public NoteController(NoteService noteService, NoteDtoToNote toObjectMapper, GroupService groupService) {
         this.noteService = noteService;
         this.toObjectMapper = toObjectMapper;
+        this.groupService = groupService;
     }
 
     @GetMapping(params = {"studentId"})
@@ -103,5 +111,36 @@ public class NoteController {
         return ResponseEntity.ok(mapper.noteToDtoNote(noteService.updateNote(id, toObjectMapper.noteDtoToNote(note))));
     }
 
-    //для вчителя окремо
+    @PostMapping("/groupCreate")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<NoteDtoResponse>> createGroupedNote(@RequestBody GroupedNote note){
+        List<NoteDtoResponse> noteList = new ArrayList<>();
+        List<Long> studentsId = new ArrayList<>();
+        if(note.getStudents().length != 0){
+            studentsId = Arrays.stream(note.getStudents()).toList();
+        }
+        if(note.getGroups().length != 0) {
+            for (Long id : note.getGroups()) {
+                Group curr = groupService.getById(id);
+                for (Student stud : curr.getStudents()) {
+                    NoteDtoRequest currNote = new NoteDtoRequest(note.getTitle(), note.getEvent(), stud.getId(), note.getBody(), false);
+                    noteList.add(mapper.noteToDtoNote(noteService.createNote(toObjectMapper.noteDtoToNote(currNote))));
+                    if (studentsId.size() != 0 && studentsId.contains(stud.getId())) {
+                        studentsId.remove(stud.getId());
+                    }
+                }
+            }
+        }
+        if(studentsId.size() != 0){
+            for(Long id: studentsId){
+                NoteDtoRequest currNote = new NoteDtoRequest(note.getTitle(),note.getEvent(),id,note.getBody(),false);
+                noteList.add(mapper.noteToDtoNote(noteService.createNote(toObjectMapper.noteDtoToNote(currNote))));
+            }
+        }
+
+        return ResponseEntity.ok(noteList);
+    }
+
+
+
 }

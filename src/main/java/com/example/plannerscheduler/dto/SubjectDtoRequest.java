@@ -4,12 +4,14 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubjectDto {
-    Long id;
+public class SubjectDtoRequest {
     String name;
 
-    public SubjectDto(String name) {
+    public SubjectDtoRequest(String name) {
         this.name = name;
+    }
+
+    public SubjectDtoRequest() {
     }
 
     public String getName() {
@@ -19,4 +21,5 @@ public class SubjectDto {
     public void setName(String name) {
         this.name = name;
     }
+
 }

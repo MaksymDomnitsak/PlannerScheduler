@@ -10,7 +10,7 @@ public class CustomScheduleDtoResponse {
 
     String customTitle;
 
-    SubjectDto subject;
+    SubjectDtoResponse subject;
 
     UserDtoResponse creator;
 
@@ -37,7 +37,7 @@ public class CustomScheduleDtoResponse {
     public CustomScheduleDtoResponse() {
     }
 
-    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDto subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
+    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDtoResponse subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
         this.id = id;
         this.customTitle = customTitle;
         this.subject = subject;
@@ -51,7 +51,7 @@ public class CustomScheduleDtoResponse {
         this.auditoryNumber = auditoryNumber;
     }
 
-    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDto subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber, LocalTime startTime, LocalTime endTime) {
+    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDtoResponse subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.customTitle = customTitle;
         this.subject = subject;
@@ -67,7 +67,7 @@ public class CustomScheduleDtoResponse {
         this.endTime = endTime;
     }
 
-    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDto subject, UserDtoResponse creator, List<UserDtoResponse> attendees, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber, LocalTime startTime, LocalTime endTime) {
+    public CustomScheduleDtoResponse(Long id, String customTitle, SubjectDtoResponse subject, UserDtoResponse creator, List<UserDtoResponse> attendees, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.customTitle = customTitle;
         this.subject = subject;
@@ -100,11 +100,11 @@ public class CustomScheduleDtoResponse {
         this.customTitle = customTitle;
     }
 
-    public SubjectDto getSubject() {
+    public SubjectDtoResponse getSubject() {
         return subject;
     }
 
-    public void setSubject(SubjectDto subject) {
+    public void setSubject(SubjectDtoResponse subject) {
         this.subject = subject;
     }
 

@@ -1,12 +1,13 @@
 package com.example.plannerscheduler.mappers;
 
-import com.example.plannerscheduler.dto.SubjectDto;
+import com.example.plannerscheduler.dto.SubjectDtoRequest;
+import com.example.plannerscheduler.dto.SubjectDtoResponse;
 import com.example.plannerscheduler.models.Subject;
 import org.mapstruct.Mapper;
 
 @Mapper
 public interface SubjectDtoToSubjectMapper {
-    Subject subjectDtoToSubject(SubjectDto subjectDto);
+    Subject subjectDtoToSubject(SubjectDtoRequest subjectDto);
 
-    SubjectDto subjectToSubjectDto(Subject subject);
+    SubjectDtoResponse subjectToSubjectDto(Subject subject);
 }

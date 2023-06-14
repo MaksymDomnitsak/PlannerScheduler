@@ -8,7 +8,7 @@ public class ScheduleDtoResponse {
 
     String customTitle;
 
-    SubjectDto subject;
+    SubjectDtoResponse subject;
 
     UserDtoResponse creator;
 
@@ -29,7 +29,7 @@ public class ScheduleDtoResponse {
     public ScheduleDtoResponse() {
     }
 
-    public ScheduleDtoResponse(Long id, SubjectDto subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
+    public ScheduleDtoResponse(Long id, SubjectDtoResponse subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
         this.id = id;
         this.subject = subject;
         this.creator = creator;
@@ -42,7 +42,7 @@ public class ScheduleDtoResponse {
         this.auditoryNumber = auditoryNumber;
     }
 
-    public ScheduleDtoResponse(Long id, String customTitle, SubjectDto subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
+    public ScheduleDtoResponse(Long id, String customTitle, SubjectDtoResponse subject, UserDtoResponse creator, GroupDtoWithStudents group, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
         this.id = id;
         this.customTitle = customTitle;
         this.subject = subject;
@@ -56,11 +56,11 @@ public class ScheduleDtoResponse {
         this.auditoryNumber = auditoryNumber;
     }
 
-    public SubjectDto getSubject() {
+    public SubjectDtoResponse getSubject() {
         return subject;
     }
 
-    public void setSubject(SubjectDto subject) {
+    public void setSubject(SubjectDtoResponse subject) {
         this.subject = subject;
     }
 

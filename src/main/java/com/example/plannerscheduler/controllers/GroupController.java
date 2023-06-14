@@ -53,6 +53,13 @@ public class GroupController {
         service.getAll(pageable).forEach(group -> groupList.add(mapper.groupToGroupDtoMapper(group)));
         return ResponseEntity.ok(groupList);
     }
+    @GetMapping(params = {"teacherId"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<GroupDto>> getByTeacherId(@RequestParam("teacherId") Long teacherId) {
+        List<GroupDto> groupList = new ArrayList<>();
+        service.getAllByTeacher(teacherId).forEach(group -> groupList.add(mapper.groupToGroupDtoMapper(group)));
+        return ResponseEntity.ok(groupList);
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

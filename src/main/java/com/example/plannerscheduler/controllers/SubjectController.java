@@ -1,6 +1,7 @@
 package com.example.plannerscheduler.controllers;
 
-import com.example.plannerscheduler.dto.SubjectDto;
+import com.example.plannerscheduler.dto.SubjectDtoRequest;
+import com.example.plannerscheduler.dto.SubjectDtoResponse;
 import com.example.plannerscheduler.mappers.SubjectDtoToSubjectMapper;
 import com.example.plannerscheduler.service.SubjectService;;
 import lombok.AccessLevel;
@@ -35,32 +36,40 @@ public class SubjectController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<SubjectDto>> getAll() {
-        List<SubjectDto> subjectList = new ArrayList<>();
+    public ResponseEntity<List<SubjectDtoResponse>> getAll() {
+        List<SubjectDtoResponse> subjectList = new ArrayList<>();
         subjectService.getAll().forEach(subject -> subjectList.add(mapper.subjectToSubjectDto(subject)));
         return ResponseEntity.ok(subjectList);
     }
 
     @GetMapping(params = {"page","size"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<SubjectDto>> getPaginated(@RequestParam("page") int page , @RequestParam("size") int size){
+    public ResponseEntity<List<SubjectDtoResponse>> getPaginated(@RequestParam("page") int page , @RequestParam("size") int size){
         Pageable pageable = PageRequest.of(page,size);
-        List<SubjectDto> subjectList = new ArrayList<>();
+        List<SubjectDtoResponse> subjectList = new ArrayList<>();
         subjectService.getAll(pageable).forEach(subject -> subjectList.add(mapper.subjectToSubjectDto(subject)));
+        return ResponseEntity.ok(subjectList);
+    }
+
+    @GetMapping(params = {"teacherId"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<SubjectDtoResponse>> getAll(@RequestParam("teacherId") Long teacherId) {
+        List<SubjectDtoResponse> subjectList = new ArrayList<>();
+        subjectService.getByTeacherId(teacherId).forEach(subject -> subjectList.add(mapper.subjectToSubjectDto(subject)));
         return ResponseEntity.ok(subjectList);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<SubjectDto> getSubjectById(@PathVariable("id") Long id){
-        SubjectDto response = mapper.subjectToSubjectDto(subjectService.getById(id));
+    public ResponseEntity<SubjectDtoResponse> getSubjectById(@PathVariable("id") Long id){
+        SubjectDtoResponse response = mapper.subjectToSubjectDto(subjectService.getById(id));
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public SubjectDto createSubject(@RequestBody SubjectDto subject){
+    public SubjectDtoResponse createSubject(@RequestBody SubjectDtoRequest subject){
         return mapper.subjectToSubjectDto(subjectService.createSubject(mapper.subjectDtoToSubject(subject)));
     }
 
@@ -75,8 +84,8 @@ public class SubjectController {
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public SubjectDto updateSubject(@PathVariable("id") Long id,
-                                      @RequestBody SubjectDto subject){
+    public SubjectDtoResponse updateSubject(@PathVariable("id") Long id,
+                                      @RequestBody SubjectDtoRequest subject){
         return mapper.subjectToSubjectDto(subjectService.updateSubject(id, mapper.subjectDtoToSubject(subject)));
     }
 

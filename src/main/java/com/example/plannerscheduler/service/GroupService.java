@@ -3,6 +3,7 @@ package com.example.plannerscheduler.service;
 import com.example.plannerscheduler.exception.ObjectNotFoundException;
 import com.example.plannerscheduler.models.Group;
 import com.example.plannerscheduler.repository.GroupRepository;
+import com.example.plannerscheduler.repository.ScheduleRepository;
 import com.example.plannerscheduler.service.interfaces.GroupServiceInterface;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,12 @@ public class GroupService implements GroupServiceInterface {
 
     GroupRepository groupRepository;
 
+    ScheduleRepository scheduleRepository;
+
     @Autowired
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(GroupRepository groupRepository,ScheduleRepository scheduleRepository) {
         this.groupRepository = groupRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public List<Group> getAll() { return groupRepository.findAll(); }
@@ -47,5 +51,7 @@ public class GroupService implements GroupServiceInterface {
         group.setId(id);
         return groupRepository.save(group);
     }
+
+    public List<Group> getAllByTeacher(Long teacherId) { return scheduleRepository.findGroupsfromScheduleByTeacher(teacherId); }
 
     }
