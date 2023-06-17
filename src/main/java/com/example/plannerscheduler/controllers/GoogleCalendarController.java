@@ -1,6 +1,7 @@
 package com.example.plannerscheduler.controllers;
 
 import com.example.plannerscheduler.dto.EventDto;
+import com.example.plannerscheduler.extras.RandomRequestIdGenerator;
 import com.example.plannerscheduler.models.Group;
 import com.example.plannerscheduler.models.Schedule;
 import com.example.plannerscheduler.models.Student;
@@ -59,6 +60,8 @@ public class GoogleCalendarController {
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
+
+
 
     GroupService groupService;
 
@@ -127,22 +130,22 @@ public class GoogleCalendarController {
         }
         event.setAttendees(allAttendees);
 
-        ConferenceData conferenceData = new ConferenceData();
-        ConferenceSolutionKey conferenceSolution = new ConferenceSolutionKey();
-        if (eventForm.getConference().equals("meet")) {
-            conferenceSolution.set("key","hangoutsMeet");
+        //service.events().insert("primary", event).execute();
+        var request = service.events().insert("primary", event).execute();
+        //request.setConferenceDataVersion(1);
 
-        } else if (eventForm.getConference().equals("hangout")) {
-            conferenceSolution.setType("eventHangout");
-
+        if(!eventForm.getConference().equals("none")) {
+            ConferenceData conferenceData = new ConferenceData();
+            ConferenceSolutionKey conferenceSolution = new ConferenceSolutionKey();
+            conferenceSolution.setType("hangoutsMeet");
+            CreateConferenceRequest createConferenceRequest = new CreateConferenceRequest();
+            createConferenceRequest.setRequestId(RandomRequestIdGenerator.generateRandomRequestId());
+            createConferenceRequest.setConferenceSolutionKey(conferenceSolution);
+            conferenceData.setCreateRequest(createConferenceRequest);
+            event.setConferenceData(conferenceData);
+            service.events().patch("primary", request.getId(), event).execute();
         }
-        CreateConferenceRequest createConferenceRequest = new CreateConferenceRequest();
-        createConferenceRequest.setRequestId(UUID.randomUUID().toString());
-        createConferenceRequest.setConferenceSolutionKey(conferenceSolution);
-        conferenceData.setCreateRequest(createConferenceRequest);
-        event.setConferenceData(conferenceData);
 
-        service.events().insert("primary", event).execute();
         return ResponseEntity.ok("Ok");
     }
 

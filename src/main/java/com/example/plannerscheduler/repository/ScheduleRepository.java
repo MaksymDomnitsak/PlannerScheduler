@@ -16,12 +16,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query(value = "select ls from Schedule ls where ls.group.name = :groupId and (ls.typeOfLesson = 'LECTURE' or ls.typeOfLesson = 'PRACTICAL' or ls.typeOfLesson = 'LABORATORY') order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByGroupIdOrderByDayOfWeekLessonOrder(String groupId);
 
-    //переделать под типы
     @Query(value = "select ls from Schedule ls where ls.creator.id = :teacherId and (ls.typeOfLesson = 'LECTURE' or ls.typeOfLesson = 'PRACTICAL' or ls.typeOfLesson = 'LABORATORY') order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByTeacherIdOrderByDayOfWeekLessonOrder(Long teacherId);
 
     @Query(value = "select ls from Schedule ls where ls.creator.id = :teacherId order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByTeacherIdOrdered(Long teacherId);
+
+    @Query(value = "select ls from Schedule ls where ls.group.name = :groupId order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
+    List<Schedule> findAllByGroupIdOrdered(String groupId);
 
     @Query(value = "select ls from Schedule ls join ls.attendees at where at.email = :attendeesEmail order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByAttendeesEmailOrdered(String attendeesEmail);

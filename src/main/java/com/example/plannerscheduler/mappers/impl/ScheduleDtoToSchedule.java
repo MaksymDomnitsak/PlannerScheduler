@@ -65,9 +65,8 @@ public class ScheduleDtoToSchedule {
         schedule.setSubject(subjectService.getById(scheduleDto.getSubjectId()));
         schedule.setGroup(groupService.getById(scheduleDto.getGroupId()));
         schedule.setCreator(userService.getById(scheduleDto.getCreatorId()));
-
+        schedule.setEvenWeek(scheduleDto.getEvenWeek());
         schedule.setDayOfWeek( scheduleDto.getDayOfWeek() );
-        schedule.setEvenWeek( scheduleDto.getEvenWeek() );
         schedule.setLessonOrder( scheduleDto.getLessonOrder() );
         schedule.setTypeOfLesson( scheduleDto.getTypeOfLesson() );
         schedule.setStartTime(scheduleDto.getStartTime());

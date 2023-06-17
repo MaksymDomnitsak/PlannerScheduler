@@ -1,5 +1,6 @@
 package com.example.plannerscheduler.service;
 
+import com.example.plannerscheduler.dto.CustomScheduleDtoResponse;
 import com.example.plannerscheduler.dto.ScheduleDtoResponse;
 import com.example.plannerscheduler.enums.LessonType;
 import com.example.plannerscheduler.exception.ObjectNotFoundException;
@@ -61,6 +62,10 @@ public class ScheduleService implements ScheduleServiceInterface {
         return scheduleRepository.findAllByTeacherIdOrdered(teacherId);
     }
 
+    public List<Schedule> getWithTimeByGroupId(String groupId){
+        return scheduleRepository.findAllByGroupIdOrdered(groupId);
+    }
+
     public List<Schedule> getByEmail(String attendeesEmail){
         return scheduleRepository.findAllByAttendeesEmailOrdered(attendeesEmail);
     }
@@ -83,6 +88,17 @@ public class ScheduleService implements ScheduleServiceInterface {
         //newSchedule.setCreatedAt(schedule.getCreatedAt());
         return scheduleRepository.save(newSchedule);
 
+    }
+
+     public boolean contains(List<CustomScheduleDtoResponse> scheduleList, Schedule event){
+        for(CustomScheduleDtoResponse schedule: scheduleList){
+            if(event.getLessonOrder() == schedule.getLessonOrder() && event.getSubject().getName() == schedule.getSubject().getName()
+            && event.getGroup().getName() == schedule.getGroup().getName() && event.getDayOfWeek() == schedule.getDayOfWeek() &&
+            event.getTypeOfLesson() == schedule.getTypeOfLesson()){
+                return true;
+            }
+        }
+        return false;
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.plannerscheduler.controllers;
 
+import com.example.plannerscheduler.dto.CustomScheduleDtoRequest;
 import com.example.plannerscheduler.dto.CustomScheduleDtoResponse;
 import com.example.plannerscheduler.dto.ScheduleDtoRequest;
 import com.example.plannerscheduler.dto.ScheduleDtoResponse;
@@ -59,7 +60,8 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ScheduleDtoResponse>> getAllByTeacherId(@RequestParam("teacherId") Long teacherId){
         List<ScheduleDtoResponse> scheduleList = new ArrayList<>();
-        scheduleService.getByTeacherId(teacherId).forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
+        scheduleService.getByTeacherId(teacherId)
+                .forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
         return ResponseEntity.ok(scheduleList);
     }
 
@@ -67,7 +69,25 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<CustomScheduleDtoResponse>> getAllWithTimeByTeacherId(@RequestParam("teacherId") Long teacherId){
         List<CustomScheduleDtoResponse> scheduleList = new ArrayList<>();
-        scheduleService.getWithTimeByTeacherId(teacherId).forEach(schedule -> scheduleList.add(mapper.scheduleToCustomDtoSchedule(schedule)));
+        scheduleService.getWithTimeByTeacherId(teacherId)
+                .forEach(schedule -> {
+                    if (!scheduleService.contains(scheduleList, schedule)) {
+                        scheduleList.add(mapper.scheduleToCustomDtoSchedule(schedule));
+                    }
+                });
+        return ResponseEntity.ok(scheduleList);
+    }
+
+    @GetMapping(value="/groupTime",params = {"groupId"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<CustomScheduleDtoResponse>> getAllWithTimeByGroupId(@RequestParam("groupId") String groupId){
+        List<CustomScheduleDtoResponse> scheduleList = new ArrayList<>();
+        scheduleService.getWithTimeByGroupId(groupId)
+                .forEach(schedule -> {
+                    if (!scheduleService.contains(scheduleList, schedule)) {
+                        scheduleList.add(mapper.scheduleToCustomDtoSchedule(schedule));
+                    }
+                });
         return ResponseEntity.ok(scheduleList);
     }
 
@@ -99,6 +119,12 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ScheduleDtoResponse createSchedule(@RequestBody ScheduleDtoRequest schedule){
         return mapper.scheduleToDtoSchedule(scheduleService.createSchedule(toObjectMapper.scheduleDtoToSchedule(schedule)));
+    }
+
+    @PostMapping("/custom")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomScheduleDtoResponse createCustomSchedule(@RequestBody CustomScheduleDtoRequest schedule){
+        return mapper.scheduleToCustomDtoSchedule(scheduleService.createSchedule(toObjectMapper.customScheduleDtoToSchedule(schedule)));
     }
 
     @DeleteMapping("/{id}")

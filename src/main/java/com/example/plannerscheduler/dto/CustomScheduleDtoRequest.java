@@ -1,6 +1,7 @@
 package com.example.plannerscheduler.dto;
 
 import com.example.plannerscheduler.enums.LessonType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -18,12 +19,14 @@ public class CustomScheduleDtoRequest {
 
     Long dayOfWeek;
 
+    @JsonProperty("isEvenWeek")
     Boolean isEvenWeek;
 
     Long lessonOrder;
 
     LessonType typeOfLesson;
 
+    @JsonProperty("isOnline")
     Boolean isOnline;
 
     String auditoryNumber;
@@ -35,13 +38,12 @@ public class CustomScheduleDtoRequest {
     public CustomScheduleDtoRequest() {
     }
 
-    public CustomScheduleDtoRequest(String customTitle, Long subjectId, Long creatorId, Long groupId, Long dayOfWeek, Boolean isEvenWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
+    public CustomScheduleDtoRequest(String customTitle, Long subjectId, Long creatorId, Long groupId, Long dayOfWeek, Long lessonOrder, LessonType typeOfLesson, Boolean isOnline, String auditoryNumber) {
         this.customTitle = customTitle;
         this.subjectId = subjectId;
         this.creatorId = creatorId;
         this.groupId = groupId;
         this.dayOfWeek = dayOfWeek;
-        this.isEvenWeek = isEvenWeek;
         this.lessonOrder = lessonOrder;
         this.typeOfLesson = typeOfLesson;
         this.isOnline = isOnline;
@@ -54,7 +56,6 @@ public class CustomScheduleDtoRequest {
         this.creatorId = creatorId;
         this.groupId = groupId;
         this.dayOfWeek = dayOfWeek;
-        this.isEvenWeek = isEvenWeek;
         this.lessonOrder = lessonOrder;
         this.typeOfLesson = typeOfLesson;
         this.isOnline = isOnline;
@@ -119,14 +120,6 @@ public class CustomScheduleDtoRequest {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Boolean getEvenWeek() {
-        return isEvenWeek;
-    }
-
-    public void setEvenWeek(Boolean evenWeek) {
-        isEvenWeek = evenWeek;
-    }
-
     public Long getLessonOrder() {
         return lessonOrder;
     }
@@ -181,5 +174,13 @@ public class CustomScheduleDtoRequest {
 
     public void setAttendees(List<Long> attendees) {
         this.attendees = attendees;
+    }
+
+    public Boolean getEvenWeek() {
+        return isEvenWeek;
+    }
+
+    public void setEvenWeek(Boolean evenWeek) {
+        isEvenWeek = evenWeek;
     }
 }
