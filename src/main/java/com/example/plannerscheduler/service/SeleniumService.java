@@ -76,7 +76,7 @@ public class SeleniumService {
     }
 
     public void getFromSchedule() {
-
+        int count=0;
         setupDriver();
         int i=1;
         boolean pairing=true;
@@ -158,7 +158,10 @@ public class SeleniumService {
                         }
                     }
                 }else groupIt++;
-
+                if(count == 500){
+                    driver.quit();
+                    return;
+                }else count++;
             }
         }
         driver.quit();

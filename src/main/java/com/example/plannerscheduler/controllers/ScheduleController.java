@@ -6,11 +6,14 @@ import com.example.plannerscheduler.dto.ScheduleDtoRequest;
 import com.example.plannerscheduler.dto.ScheduleDtoResponse;
 import com.example.plannerscheduler.mappers.ScheduleDtoToScheduleMapper;
 import com.example.plannerscheduler.mappers.impl.ScheduleDtoToSchedule;
+import com.example.plannerscheduler.models.Schedule;
 import com.example.plannerscheduler.service.ScheduleService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.data.domain.Page.empty;
 
 @RestController
 @CrossOrigin(origins = "*",maxAge = 3600)
@@ -65,11 +70,11 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleList);
     }
 
-    @GetMapping(value="/time",params = {"teacherId"})
+    @GetMapping(value="/time",params = {"creatorId"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<CustomScheduleDtoResponse>> getAllWithTimeByTeacherId(@RequestParam("teacherId") Long teacherId){
+    public ResponseEntity<List<CustomScheduleDtoResponse>> getAllWithTimeByTeacherId(@RequestParam("creatorId") Long creatorId){
         List<CustomScheduleDtoResponse> scheduleList = new ArrayList<>();
-        scheduleService.getWithTimeByTeacherId(teacherId)
+        scheduleService.getWithTimeByCreatorId(creatorId)
                 .forEach(schedule -> {
                     if (!scheduleService.contains(scheduleList, schedule)) {
                         scheduleList.add(mapper.scheduleToCustomDtoSchedule(schedule));
@@ -101,17 +106,19 @@ public class ScheduleController {
 
     @GetMapping(params = {"page","size"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ScheduleDtoResponse>> getPaginated(@RequestParam("page") int page , @RequestParam("size") int size){
+    public ResponseEntity<Page<ScheduleDtoResponse>> getPaginated(@RequestParam("page") int page , @RequestParam("size") int size){
         Pageable pageable = PageRequest.of(page,size);
         List<ScheduleDtoResponse> scheduleList = new ArrayList<>();
-        scheduleService.getAll(pageable).forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
-        return ResponseEntity.ok(scheduleList);
+        Page<Schedule> events = scheduleService.getAll(pageable);
+        events.forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
+        Page<ScheduleDtoResponse> pageEvents = new PageImpl<>(scheduleList,pageable,events.getTotalElements());
+        return ResponseEntity.ok(pageEvents);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ScheduleDtoResponse> getScheduleById(@PathVariable("id") Long id){
-        ScheduleDtoResponse response = mapper.scheduleToDtoSchedule(scheduleService.getById(id));
+    public ResponseEntity<CustomScheduleDtoResponse> getScheduleById(@PathVariable("id") Long id){
+        CustomScheduleDtoResponse response = mapper.scheduleToCustomDtoSchedule(scheduleService.getById(id));
         return ResponseEntity.ok(response);
     }
 
@@ -138,9 +145,9 @@ public class ScheduleController {
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("#schedule.userCreatorId == authentication.principal.id or hasAnyAuthority('ADMIN')")
-    public ScheduleDtoResponse updateSchedule(@PathVariable("id") Long id,
-                                      @RequestBody ScheduleDtoRequest schedule){
-        return mapper.scheduleToDtoSchedule(scheduleService.updateSchedule(id, toObjectMapper.scheduleDtoToSchedule(schedule)));
+    public CustomScheduleDtoResponse updateSchedule(@PathVariable("id") Long id,
+                                      @RequestBody CustomScheduleDtoRequest schedule){
+        return mapper.scheduleToCustomDtoSchedule(scheduleService.updateSchedule(id, toObjectMapper.customScheduleDtoToSchedule(schedule)));
     }
 
 

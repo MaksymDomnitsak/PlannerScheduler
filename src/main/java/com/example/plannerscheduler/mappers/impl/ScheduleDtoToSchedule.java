@@ -62,8 +62,8 @@ public class ScheduleDtoToSchedule {
             }
             schedule.setAttendees(userList);
         }
-        schedule.setSubject(subjectService.getById(scheduleDto.getSubjectId()));
-        schedule.setGroup(groupService.getById(scheduleDto.getGroupId()));
+        schedule.setSubject(scheduleDto.getSubjectId() != null ? subjectService.getById(scheduleDto.getSubjectId()) : null);
+        schedule.setGroup(scheduleDto.getGroupId() != null ? groupService.getById(scheduleDto.getGroupId()) : null);
         schedule.setCreator(userService.getById(scheduleDto.getCreatorId()));
         schedule.setEvenWeek(scheduleDto.getEvenWeek());
         schedule.setDayOfWeek( scheduleDto.getDayOfWeek() );

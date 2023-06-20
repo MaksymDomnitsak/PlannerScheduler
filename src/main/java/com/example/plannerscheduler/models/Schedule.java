@@ -34,7 +34,7 @@ public class Schedule {
     private List<User> attendees;
 
     @ManyToOne
-    @JoinColumn(name="group_id", nullable = false)
+    @JoinColumn(name="group_id")
     private Group group;
 
     @Column(name = "day_of_week")

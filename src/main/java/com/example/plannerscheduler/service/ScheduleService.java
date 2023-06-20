@@ -41,7 +41,7 @@ public class ScheduleService implements ScheduleServiceInterface {
 
     public Page<Schedule> getAll(Pageable pageable)
     {
-        Page<Schedule> page = scheduleRepository.findAll(pageable);
+        Page<Schedule> page = scheduleRepository.findPageOfSchedule(pageable);
         return page;
     }
 
@@ -58,8 +58,8 @@ public class ScheduleService implements ScheduleServiceInterface {
         return scheduleRepository.findAllByTeacherIdOrderByDayOfWeekLessonOrder(teacherId);
     }
 
-    public List<Schedule> getWithTimeByTeacherId(Long teacherId){
-        return scheduleRepository.findAllByTeacherIdOrdered(teacherId);
+    public List<Schedule> getWithTimeByCreatorId(Long creatorId){
+        return scheduleRepository.findAllByCreatorIdOrdered(creatorId);
     }
 
     public List<Schedule> getWithTimeByGroupId(String groupId){
@@ -91,6 +91,10 @@ public class ScheduleService implements ScheduleServiceInterface {
     }
 
      public boolean contains(List<CustomScheduleDtoResponse> scheduleList, Schedule event){
+        if(event.getTypeOfLesson().name().equals("CUSTOM") || event.getTypeOfLesson().name().equals("EXAM") ||
+                event.getTypeOfLesson().name().equals("TEST")){
+            return false;
+        }
         for(CustomScheduleDtoResponse schedule: scheduleList){
             if(event.getLessonOrder() == schedule.getLessonOrder() && event.getSubject().getName() == schedule.getSubject().getName()
             && event.getGroup().getName() == schedule.getGroup().getName() && event.getDayOfWeek() == schedule.getDayOfWeek() &&
