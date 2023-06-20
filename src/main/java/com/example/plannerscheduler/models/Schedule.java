@@ -29,7 +29,7 @@ public class Schedule {
     @JoinColumn(name="creator_id", nullable = false)
     private User creator;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(joinColumns = @JoinColumn(name = "event_id"))
     private List<User> attendees;
 

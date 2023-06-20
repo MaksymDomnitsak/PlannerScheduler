@@ -24,6 +24,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query(value = "select ls from Schedule ls where ls.creator.id = :creatorId order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByCreatorIdOrdered(Long creatorId);
 
+
     @Query(value = "select ls from Schedule ls where ls.group.name = :groupId order by ls.dayOfWeek ASC, ls.isEvenWeek ASC, ls.lessonOrder ASC ")
     List<Schedule> findAllByGroupIdOrdered(String groupId);
 

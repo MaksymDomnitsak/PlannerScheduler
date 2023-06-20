@@ -158,10 +158,10 @@ public class SeleniumService {
                         }
                     }
                 }else groupIt++;
-                if(count == 500){
+                /*if(count == 1000){
                     driver.quit();
                     return;
-                }else count++;
+                }else count++;*/
             }
         }
         driver.quit();

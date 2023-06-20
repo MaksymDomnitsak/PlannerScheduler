@@ -46,9 +46,11 @@ public class ScheduleController {
         this.toObjectMapper = toObjectMapper;
     }
 
+
+
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ScheduleDtoResponse>> getAll() {
+    public ResponseEntity<List<ScheduleDtoResponse>> getAllSorted() {
         List<ScheduleDtoResponse> scheduleList = new ArrayList<>();
         scheduleService.getAll().forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
         return ResponseEntity.ok(scheduleList);
@@ -67,6 +69,13 @@ public class ScheduleController {
         List<ScheduleDtoResponse> scheduleList = new ArrayList<>();
         scheduleService.getByTeacherId(teacherId)
                 .forEach(schedule -> scheduleList.add(mapper.scheduleToDtoSchedule(schedule)));
+        return ResponseEntity.ok(scheduleList);
+    }
+    @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<CustomScheduleDtoResponse>> getAll() {
+        List<CustomScheduleDtoResponse> scheduleList = new ArrayList<>();
+        scheduleService.findAll().forEach(schedule -> scheduleList.add(mapper.scheduleToCustomDtoSchedule(schedule)));
         return ResponseEntity.ok(scheduleList);
     }
 

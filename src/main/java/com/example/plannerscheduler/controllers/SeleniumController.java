@@ -44,9 +44,8 @@ public class SeleniumController {
     @GetMapping("/loadAll")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<String> loadSchedule(){
+    public void loadSchedule(){
         service.getFromSchedule();
-        return ResponseEntity.ok("OK");
     }
 
 }

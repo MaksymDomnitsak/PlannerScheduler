@@ -33,6 +33,9 @@ public class ScheduleService implements ScheduleServiceInterface {
         this.scheduleRepository = scheduleRepository;
     }
 
+    public List<Schedule> findAll() {
+        return scheduleRepository.findAll();
+    }
 
     public List<Schedule> getAll() {
         List<Schedule> schedules = scheduleRepository.getAllSchedule();
@@ -69,7 +72,6 @@ public class ScheduleService implements ScheduleServiceInterface {
     public List<Schedule> getByEmail(String attendeesEmail){
         return scheduleRepository.findAllByAttendeesEmailOrdered(attendeesEmail);
     }
-
 
     @Transactional
     public void delete(Long id) {
